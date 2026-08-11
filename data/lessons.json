@@ -1,0 +1,382 @@
+[
+  {
+    "id": "l1",
+    "subject": "Mathematics",
+    "grade": "Grade 6",
+    "board": "CBSE",
+    "pillar": "Pattern Recognition",
+    "title": "Sharing Rotis Fairly",
+    "desc": "Students split rotis among friends to discover how fractions are just a pattern of fair division.",
+    "status": "published",
+    "stages": [
+      "Four friends, three rotis. How does everyone get an equal share?",
+      "Students physically cut paper 'rotis' and distribute pieces among groups of 2, 3, 4 and 5 friends.",
+      "Groups compare how they cut — some cut all pieces the same size, some didn't. Why does that matter?",
+      "Students notice: same-size pieces + same number per person = fair share, regardless of group size.",
+      "Predict: how would you cut 5 rotis for 4 friends?",
+      "Discuss why the size of each piece depends on both the number of rotis and the number of people.",
+      "Write one line: what does the fraction 3/4 actually mean in this activity?",
+      "Connect to real-world: recipe scaling, and how apps split delivery bills fairly."
+    ]
+  },
+  {
+    "id": "l2",
+    "subject": "Science",
+    "grade": "Grade 8",
+    "board": "State Board",
+    "pillar": "Decomposition",
+    "title": "Breaking Down a Leaf's Factory",
+    "desc": "Students decompose photosynthesis into its separate inputs, processes and outputs.",
+    "status": "published",
+    "stages": [
+      "How does a leaf 'make its own food' with no kitchen and no shop?",
+      "Students draw a leaf and label everything going in and out of it that they can think of.",
+      "Groups compare lists — what's missing, what's repeated, what can be grouped together?",
+      "Students notice every living process can be split into Inputs → Process → Outputs.",
+      "Predict: what happens to the outputs if one input (light) is removed?",
+      "Discuss why decomposing photosynthesis into parts makes each part easier to test.",
+      "Which part of the process did you find hardest to isolate, and why?",
+      "Connect to real-world: engineers decompose machines into small testable parts the same way."
+    ]
+  },
+  {
+    "id": "l3",
+    "subject": "Social Science",
+    "grade": "Grade 7",
+    "board": "CBSE",
+    "pillar": "Algorithm Design",
+    "title": "Mapping the Spice Route",
+    "desc": "Students design a step-by-step trade route across historical ports, then compare it to real trade algorithms.",
+    "status": "published",
+    "stages": [
+      "How did traders decide the order to visit ports, given winds, seasons and goods?",
+      "Students sequence port cards on a map to build the shortest safe seasonal route.",
+      "Groups justify their order — why this port before that one?",
+      "Students notice good routes repeat a pattern: cluster nearby ports, then jump.",
+      "Predict: what happens to the route if the monsoon season shifts by two months?",
+      "Discuss why traders needed a fixed procedure they could repeat every year.",
+      "What was one decision rule your group used without realizing it was a rule?",
+      "Connect to real-world: GPS apps and delivery services design step-by-step routes the same way."
+    ]
+  },
+  {
+    "id": "l4",
+    "subject": "English",
+    "grade": "Grade 5",
+    "board": "ICSE",
+    "pillar": "Pattern Recognition",
+    "title": "Sorting Time Words",
+    "desc": "Students sort verbs by tense to discover the underlying rule pattern of English grammar.",
+    "status": "published",
+    "stages": [
+      "How do we know if a sentence is about yesterday, today, or tomorrow from one word?",
+      "Students sort a pile of verb cards into three baskets: past, present, future.",
+      "Groups check each other's baskets — any disagreements? Why?",
+      "Students notice most past-tense verbs share an '-ed' pattern, with some exceptions.",
+      "Predict which basket a brand-new invented verb would land in, and why.",
+      "Discuss why English has exceptions, and how a 'pattern with exceptions' is still useful.",
+      "Which verb was hardest to sort, and what made it tricky?",
+      "Connect to real-world: spell-checkers and grammar apps use the same pattern-matching idea."
+    ]
+  },
+  {
+    "id": "l5",
+    "subject": "Arts",
+    "grade": "Grade 4",
+    "board": "State Board",
+    "pillar": "Abstraction",
+    "title": "Rangoli Rules",
+    "desc": "Students abstract a rangoli design into a repeatable rule so anyone could recreate it without seeing the original.",
+    "status": "published",
+    "stages": [
+      "Could you describe a rangoli over the phone so someone draws the exact same one?",
+      "Students draw a simple rangoli, then write instructions for a partner to recreate it, sight unseen.",
+      "Partners compare the original and the copy — what got lost in translation?",
+      "Students notice the best instructions ignored small details and kept only the core repeating rule.",
+      "Predict what a rangoli would look like if the core rule was repeated 12 times instead of 6.",
+      "Discuss why leaving out unnecessary detail made the instructions easier to follow, not harder.",
+      "What's one detail you first included that turned out not to matter?",
+      "Connect to real-world: phone icons are abstractions too — simplified pictures that tell you what an app does."
+    ]
+  },
+  {
+    "id": "l6",
+    "subject": "Mathematics",
+    "grade": "Grade 3",
+    "board": "CBSE",
+    "pillar": "Pattern Recognition",
+    "title": "Reading the Rangoli Row",
+    "desc": "Students identify repeating bead and tile patterns, then create their own rule-based sequences.",
+    "status": "published",
+    "stages": [
+      "Can you tell what comes next in a row of colored beads just by looking at what came before?",
+      "Students string colored beads (or draw tiles) following a repeating rule, then swap rows with a partner.",
+      "Groups explain the rule behind their partner's row before checking if they guessed right.",
+      "Students notice a pattern is really just a short rule that repeats, no matter how long the row gets.",
+      "Predict bead number 15 in a row that repeats every 3 beads, without counting each one.",
+      "Discuss why knowing the repeat-length lets you skip ahead instead of counting one by one.",
+      "What's one pattern rule you noticed outside class today — on a sari, a gate, a floor tile?",
+      "Connect to real-world: traffic light sequences and phone lock patterns both repeat by a fixed rule too."
+    ]
+  },
+  {
+    "id": "l7",
+    "subject": "Mathematics",
+    "grade": "Grade 7",
+    "board": "State Board",
+    "pillar": "Algorithm Design",
+    "title": "The Number Line Board Game",
+    "desc": "Students build a board game where forward/backward moves represent integers, then write scoring rules.",
+    "status": "published",
+    "stages": [
+      "How do you keep score in a game where you can move both forward and backward?",
+      "Students build a number-line board game and write a fixed set of movement rules (algorithm) for scoring gains and losses.",
+      "Groups trade rule sets and play each other's games — do the rules ever contradict themselves?",
+      "Students notice every 'backward' move behaves the same way regardless of which number you start from.",
+      "Predict your position after three forward moves of +4 and two backward moves of -6.",
+      "Discuss why a consistent rule set (an algorithm) is what makes the game fair to play twice.",
+      "Which of your original rules did you have to rewrite because it broke the game?",
+      "Connect to real-world: bank statements and elevator buttons use the same forward/backward integer logic."
+    ]
+  },
+  {
+    "id": "l8",
+    "subject": "Mathematics",
+    "grade": "Grade 8",
+    "board": "ICSE",
+    "pillar": "Decomposition",
+    "title": "Balancing the Scale",
+    "desc": "Students represent equations as balance scales, decomposing them into small reversible operations.",
+    "status": "published",
+    "stages": [
+      "How do you find an unknown weight using only a balance scale and known weights?",
+      "Students use a drawn balance-scale model to solve for x, removing or adding the same weight to both sides each step.",
+      "Groups compare their step order — did everyone decompose the equation the same way?",
+      "Students notice every solved equation breaks into the same small, reversible moves repeated in some order.",
+      "Predict how many steps a new, longer equation will take before you solve it.",
+      "Discuss why doing the same operation to both sides keeps the scale — and the equation — balanced.",
+      "Which single step, if skipped, would have tipped your answer off balance?",
+      "Connect to real-world: spreadsheet formulas solve for an unknown cell using the exact same step-by-step balancing."
+    ]
+  },
+  {
+    "id": "l9",
+    "subject": "Science",
+    "grade": "Grade 4",
+    "board": "CBSE",
+    "pillar": "Pattern Recognition",
+    "title": "Watching a Seed Keep Its Promise",
+    "desc": "Students track plant growth under different conditions to identify and predict growth patterns.",
+    "status": "published",
+    "stages": [
+      "Does a seed grow the same way every time, or does it depend on where you put it?",
+      "Students plant seeds in different conditions (sun/shade, more/less water) and record height every day for a week.",
+      "Groups compare growth charts — whose seedling grew fastest, and under which condition?",
+      "Students notice the sunlit, watered seedlings follow a similar day-by-day growth pattern.",
+      "Predict how tall the seedling will be in 3 more days if the pattern continues.",
+      "Discuss why comparing conditions, not just one plant, is what reveals the real pattern.",
+      "What surprised you about how your prediction compared to what actually happened?",
+      "Connect to real-world: farmers and weather apps both use past growth patterns to predict future harvests."
+    ]
+  },
+  {
+    "id": "l10",
+    "subject": "Science",
+    "grade": "Grade 6",
+    "board": "State Board",
+    "pillar": "Decomposition",
+    "title": "Pulling One Card Out of the Web",
+    "desc": "Students build a food web, remove one organism, and trace the cascading effects.",
+    "status": "published",
+    "stages": [
+      "What happens to an entire ecosystem if just one animal disappears from it?",
+      "Students build a food web with string connecting organism cards, then physically remove one card and watch which connections go slack.",
+      "Groups discuss which removed card caused the most collapsed connections, and why.",
+      "Students notice organisms near the base of the web affect more connections than ones near the top.",
+      "Predict what happens to the rest of the web if you remove the primary producer instead of a top predator.",
+      "Discuss how breaking the web into individual links (decomposition) makes a messy ecosystem easier to reason about.",
+      "Which single organism did you assume was unimportant, until you traced its connections?",
+      "Connect to real-world: engineers decompose power grids the same way to find which single failure would cause the biggest blackout."
+    ]
+  },
+  {
+    "id": "l11",
+    "subject": "Social Science",
+    "grade": "Grade 6",
+    "board": "CBSE",
+    "pillar": "Algorithm Design",
+    "title": "Shortest Path to the Well",
+    "desc": "Students design step-by-step routes between landmarks, introducing pathfinding.",
+    "status": "published",
+    "stages": [
+      "If you had to walk between three landmarks on a map, what order would get you there fastest?",
+      "Students mark landmarks on a hand-drawn map and write a step-by-step route (algorithm) between them, then measure the distance.",
+      "Groups compare routes for the same landmarks — did everyone find the same shortest path?",
+      "Students notice routes that visit the nearest unvisited landmark first tend to come out shorter.",
+      "Predict which route will be shortest before measuring a new set of landmarks.",
+      "Discuss why writing the route as a fixed set of steps lets a friend follow it without redoing your thinking.",
+      "What was one landmark order you were sure was shortest, but measured longer?",
+      "Connect to real-world: GPS apps solve this same shortest-path problem for millions of roads at once."
+    ]
+  },
+  {
+    "id": "l12",
+    "subject": "Social Science",
+    "grade": "Grade 8",
+    "board": "ICSE",
+    "pillar": "Pattern Recognition",
+    "title": "Counting the Class Election",
+    "desc": "Students simulate an election and analyze voting patterns and fairness.",
+    "status": "published",
+    "stages": [
+      "How do you turn a room full of different opinions into one fair decision?",
+      "Students run a simulated class election with candidates and secret ballots, then tally and chart the results.",
+      "Groups discuss what the vote spread tells them about who felt strongly versus who was undecided.",
+      "Students notice patterns in how votes cluster — by seating group, by prior friendships, or evenly spread.",
+      "Predict how the result might change if one candidate dropped out before the vote.",
+      "Discuss why counting every vote the same way, every time, is what makes the count trustworthy.",
+      "Did the result match what you expected walking in — why or why not?",
+      "Connect to real-world: real election commissions and opinion-poll models look for the same voting patterns at national scale."
+    ]
+  },
+  {
+    "id": "l13",
+    "subject": "English",
+    "grade": "Grade 4",
+    "board": "State Board",
+    "pillar": "Algorithm Design",
+    "title": "Unscrambling the Sentence",
+    "desc": "Students rearrange shuffled word cards using grammatical rules.",
+    "status": "published",
+    "stages": [
+      "Given a pile of shuffled words, how do you know which order makes them a real sentence?",
+      "Students receive word cards in random order and physically arrange them into a grammatically correct sentence.",
+      "Groups compare their sentence order and explain the rule they used to decide word placement.",
+      "Students notice subject usually comes before verb, and verb before object, across most of their sentences.",
+      "Predict where a new word card belongs in the sentence before placing it.",
+      "Discuss why following the same word-order rule every time makes a sentence make sense to any reader.",
+      "Which word was hardest to place, and what rule finally told you where it belonged?",
+      "Connect to real-world: grammar-check tools in typing apps follow the same word-order rules to flag broken sentences."
+    ]
+  },
+  {
+    "id": "l14",
+    "subject": "English",
+    "grade": "Grade 6",
+    "board": "CBSE",
+    "pillar": "Decomposition",
+    "title": "Taking a Story Apart Before Writing One",
+    "desc": "Students decompose stories into character, setting, conflict, climax, and resolution before writing.",
+    "status": "published",
+    "stages": [
+      "Before writing a story, how do you make sure it actually has a beginning, middle, and end?",
+      "Students take a familiar story and break it into labeled cards: character, setting, conflict, climax, resolution.",
+      "Groups compare which part of the story was hardest to separate out from the others.",
+      "Students notice every story they decompose, no matter the genre, breaks into the same five parts.",
+      "Predict what a story would feel like missing if you wrote it without a clear conflict.",
+      "Discuss why planning each part separately (decomposition) makes writing the whole story less overwhelming.",
+      "Which part did you write first when you tried it yourself, and why?",
+      "Connect to real-world: movie scripts and even AI story generators are built by planning these same story parts separately."
+    ]
+  },
+  {
+    "id": "l15",
+    "subject": "English",
+    "grade": "Grade 8",
+    "board": "ICSE",
+    "pillar": "Pattern Recognition",
+    "title": "Building a Sentence Decision Tree",
+    "desc": "Students classify sentences using rule-based decision trees.",
+    "status": "published",
+    "stages": [
+      "How can you quickly tell whether a sentence is a question, a command, or a statement?",
+      "Students sort a mixed pile of sentences by asking a fixed sequence of yes/no questions (a decision tree).",
+      "Groups compare which sentences were tricky to classify, and where their decision trees disagreed.",
+      "Students notice punctuation and word order both give away the sentence type before you even read the meaning.",
+      "Predict how a brand-new sentence will be classified using only the decision tree, before reading it fully.",
+      "Discuss why a fixed set of yes/no questions can sort any sentence, no matter the topic.",
+      "What's one sentence type your decision tree got wrong the first time, and why?",
+      "Connect to real-world: voice assistants use a similar decision tree to tell a question from a command."
+    ]
+  },
+  {
+    "id": "l16",
+    "subject": "Hindi",
+    "grade": "Grade 5",
+    "board": "State Board",
+    "pillar": "Pattern Recognition",
+    "title": "मुहावरों का समूह (Grouping Idioms)",
+    "desc": "Students group idioms by meaning to uncover language patterns.",
+    "status": "published",
+    "stages": [
+      "How can you guess the meaning of a muhavara (idiom) you've never heard before?",
+      "Students sort a set of idiom cards into groups by the feeling or situation each one describes.",
+      "Groups defend why they placed a tricky idiom in one category instead of another.",
+      "Students notice idioms about fear, idioms about anger, and idioms about surprise each share a common shape.",
+      "Predict which category a brand-new idiom belongs to just from its keywords.",
+      "Discuss why grouping by meaning, not just by the words used, is what makes the categorization actually useful.",
+      "Which idiom's real meaning surprised you the most compared to its literal words?",
+      "Connect to real-world: translation apps struggle most with idioms for exactly this reason — the words don't mean what they literally say."
+    ]
+  },
+  {
+    "id": "l17",
+    "subject": "Computer Science",
+    "grade": "Grade 6",
+    "board": "CBSE",
+    "pillar": "Decomposition",
+    "title": "Storyboarding Before Scripting",
+    "desc": "Students decompose an animation into scenes, sprites, costumes, and events before building it in Scratch.",
+    "status": "published",
+    "stages": [
+      "Before opening Scratch, how do you plan an animation so you're not guessing as you build it?",
+      "Students storyboard a short animation on paper, breaking it into scenes, characters (sprites), costumes, and triggering events.",
+      "Groups walk another team through their storyboard before either group touches a computer.",
+      "Students notice every scene follows the same shape: something happens, a sprite responds, the scene changes.",
+      "Predict how many separate scripts your animation will need before you count them on the storyboard.",
+      "Discuss why planning scenes and sprites separately (decomposition) makes the actual Scratch building faster, not slower.",
+      "What part of your storyboard did you change once you saw it running in Scratch?",
+      "Connect to real-world: film and game studios storyboard for the exact same reason before writing any code."
+    ]
+  },
+  {
+    "id": "l18",
+    "subject": "Computer Science",
+    "grade": "Grade 7",
+    "board": "State Board",
+    "pillar": "Algorithm Design",
+    "title": "Flowcharting the Rules of Play",
+    "desc": "Students design game logic with flowcharts before building loops and conditions in Scratch.",
+    "status": "published",
+    "stages": [
+      "How does a game decide, instantly, whether you've won, lost, or should keep playing?",
+      "Students flowchart their game's rules — loops, conditions, and events — before building it in Scratch.",
+      "Groups trace a partner's flowchart by hand, playing out what the game would do on a sample turn.",
+      "Students notice every working game rule follows the same shape: check a condition, then loop or branch.",
+      "Predict what your game will do in an edge case (e.g., score exactly zero) before testing it.",
+      "Discuss why writing the algorithm as a flowchart first catches bugs before they're even coded.",
+      "Which rule in your flowchart turned out to be missing a condition once you actually played the game?",
+      "Connect to real-world: traffic signals and elevators run on the same loop-and-condition logic as your game."
+    ]
+  },
+  {
+    "id": "l19",
+    "subject": "Computer Science",
+    "grade": "Grade 8",
+    "board": "ICSE",
+    "pillar": "Pattern Recognition",
+    "title": "Teaching a Human to Sort Like AI",
+    "desc": "Students hand-classify objects using a rule they write, then compare it to how simple AI models work.",
+    "status": "published",
+    "stages": [
+      "Could you write down a simple rule that sorts your classmates' bags into 'school bag' or 'sports bag' without seeing the label?",
+      "Students collect simple data (size, shape, straps) on classroom objects and manually classify them using a rule they write themselves.",
+      "Groups test their rule on a new object and discuss where it got the classification wrong.",
+      "Students notice their rule is really just a pattern found in the data — the same thing a simple AI model does.",
+      "Predict how a new, unusual object will be classified by your rule before testing it.",
+      "Discuss why a rule that works on training examples can still fail on a new object it hasn't seen before.",
+      "Where did your own 'AI rule' behave differently than how you personally would judge the object?",
+      "Connect to real-world: this is exactly how simple AI classifiers work — they find a pattern in labeled examples, then apply it to new ones."
+    ]
+  }
+]
