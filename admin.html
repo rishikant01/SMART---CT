@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CT Setu — Admin</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --indigo-deep:#1F3A5F; --chalk:#FBF8F1; --chalk-dim:#F1ECE0; --marigold:#E8A33D;
+    --marigold-deep:#C9832A; --leaf:#4C7A57; --berry:#9C4A62; --ink:#221F1A; --ink-soft:#5C574C; --line:#DFD8C6;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--chalk);color:var(--ink);font-family:'Inter',sans-serif;line-height:1.5;}
+  h1,h2,h3{font-family:'Baloo 2',sans-serif;color:var(--indigo-deep);margin:0;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  .wrap{max-width:960px;margin:0 auto;padding:40px 24px 100px;}
+  a{color:var(--indigo-deep);}
+  button{font-family:inherit;cursor:pointer;border:none;border-radius:9px;padding:10px 18px;font-weight:700;font-size:.85rem;}
+  input,select,textarea{font-family:inherit;width:100%;padding:10px;border-radius:8px;border:1.5px solid var(--line);background:var(--chalk-dim);font-size:.88rem;color:var(--ink);}
+  textarea{resize:vertical;min-height:52px;}
+  label{display:block;font-size:.78rem;font-weight:700;color:var(--ink-soft);margin-bottom:5px;}
+  .field{margin-bottom:14px;}
+  .stage-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+  /* ---- gate ---- */
+  #gate{max-width:420px;margin:120px auto;text-align:center;background:#fff;border:1px solid var(--line);border-radius:16px;padding:40px 30px;box-shadow:0 20px 50px -20px rgba(19,40,68,.3);}
+  #gate p{color:var(--ink-soft);font-size:.9rem;margin:10px 0 20px;}
+  #gate input{margin-bottom:14px;}
+  .btn-primary{background:var(--marigold);color:#2A1B03;}
+  .btn-primary:hover{background:var(--marigold-deep);}
+  .btn-dark{background:var(--indigo-deep);color:#fff;}
+  .btn-danger{background:none;border:1.5px solid var(--berry);color:var(--berry);}
+  #gate-error{color:var(--berry);font-size:.82rem;margin-top:10px;min-height:1.2em;}
+
+  /* ---- app ---- */
+  #app{display:none;}
+  header{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px;flex-wrap:wrap;gap:14px;}
+  header p{color:var(--ink-soft);margin-top:4px;font-size:.9rem;}
+  .lock-out{font-size:.8rem;color:var(--ink-soft);background:none;border:1px solid var(--line);padding:8px 14px;border-radius:999px;}
+
+  .panel{background:#fff;border:1px solid var(--line);border-radius:14px;padding:24px;margin-top:20px;box-shadow:0 6px 20px -14px rgba(19,40,68,.25);}
+  .panel h2{font-size:1.2rem;margin-bottom:16px;}
+
+  .lesson-row{
+    display:flex;justify-content:space-between;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--line);
+  }
+  .lesson-row:last-child{border-bottom:none;}
+  .lesson-row .meta{font-size:.8rem;color:var(--ink-soft);}
+  .lesson-row .title{font-weight:700;color:var(--indigo-deep);}
+  .row-actions{display:flex;gap:8px;flex:none;}
+  .row-actions button{padding:7px 12px;font-size:.78rem;}
+  .tag{font-size:.68rem;font-weight:700;padding:3px 9px;border-radius:999px;color:#fff;background:var(--berry);}
+
+  #status-msg{margin-top:12px;font-size:.85rem;min-height:1.2em;}
+  .empty{color:var(--ink-soft);font-size:.88rem;}
+</style>
+</head>
+<body>
+
+<div id="gate">
+  <h1>CT Setu Admin</h1>
+  <p>Owner-only. Enter your admin key to manage the Lesson Bank.</p>
+  <input type="password" id="admin-key-input" placeholder="Admin key" onkeydown="if(event.key==='Enter')unlock()">
+  <button class="btn-primary" style="width:100%" onclick="unlock()">Unlock</button>
+  <p id="gate-error"></p>
+</div>
+
+<div id="app">
+  <div class="wrap">
+    <header>
+      <div>
+        <h1>Manage Lessons</h1>
+        <p>Everything here is public the moment you publish it — visitors don't need a key to read.</p>
+      </div>
+      <button class="lock-out" onclick="lock()">Lock admin session</button>
+    </header>
+
+    <div class="panel">
+      <h2 id="form-heading">Add a New Lesson</h2>
+      <div class="stage-grid">
+        <div class="field"><label>Subject</label><input id="f-subject" placeholder="e.g. Mathematics"></div>
+        <div class="field"><label>Grade</label><input id="f-grade" placeholder="e.g. Grade 6"></div>
+      </div>
+      <div class="stage-grid">
+        <div class="field"><label>Board</label><input id="f-board" placeholder="e.g. CBSE"></div>
+        <div class="field"><label>CT Pillar</label>
+          <select id="f-pillar">
+            <option>Decomposition</option>
+            <option>Pattern Recognition</option>
+            <option>Abstraction</option>
+            <option>Algorithm Design</option>
+          </select>
+        </div>
+      </div>
+      <div class="field"><label>Title / Topic</label><input id="f-title" placeholder="e.g. Sharing Rotis Fairly"></div>
+      <div class="field"><label>Short Description (shown on the lesson card)</label><textarea id="f-desc" placeholder="One sentence summarizing the activity"></textarea></div>
+      <div class="field"><label>Cover / Reference Photo (optional)</label><input type="file" id="f-photo" accept="image/png,image/jpeg,image/webp"></div>
+
+      <div class="field"><label>1 · Problem</label><textarea id="s-1"></textarea></div>
+      <div class="field"><label>2 · Activity</label><textarea id="s-2"></textarea></div>
+      <div class="field"><label>3 · Discussion</label><textarea id="s-3"></textarea></div>
+      <div class="field"><label>4 · Pattern Recognition</label><textarea id="s-4"></textarea></div>
+      <div class="field"><label>5 · Prediction</label><textarea id="s-5"></textarea></div>
+      <div class="field"><label>6 · Reasoning</label><textarea id="s-6"></textarea></div>
+      <div class="field"><label>7 · Reflection</label><textarea id="s-7"></textarea></div>
+      <div class="field"><label>8 · Real-World / AI Connection</label><textarea id="s-8"></textarea></div>
+
+      <button class="btn-dark" id="submit-btn" onclick="submitLesson()">Publish Lesson</button>
+      <button class="lock-out" id="cancel-edit-btn" style="display:none" onclick="resetForm()">Cancel edit</button>
+      <p id="status-msg"></p>
+    </div>
+
+    <div class="panel">
+      <h2>Published Lessons (<span id="lesson-count">0</span>)</h2>
+      <div id="lesson-list"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let ADMIN_KEY = "";      // held in memory only for this tab session — never persisted
+let editingId = null;
+
+function unlock(){
+  const key = document.getElementById('admin-key-input').value.trim();
+  if(!key){ return; }
+  ADMIN_KEY = key;
+  // Verify the key by attempting a harmless authenticated call.
+  fetch('/api/admin/lessons', {method:'POST', headers:{'X-Admin-Key':ADMIN_KEY,'Content-Type':'application/json'}, body: JSON.stringify({})})
+    .then(res => {
+      if(res.status === 401){
+        document.getElementById('gate-error').textContent = "That key was rejected. Check CT_SETU_ADMIN_KEY on the server.";
+        ADMIN_KEY = "";
+        return;
+      }
+      // 400 here just means our probe payload was incomplete — the key itself was accepted.
+      document.getElementById('gate').style.display = 'none';
+      document.getElementById('app').style.display = 'block';
+      loadLessons();
+    })
+    .catch(() => {
+      document.getElementById('gate-error').textContent = "Couldn't reach the server. Is 'python app.py' running?";
+    });
+}
+
+function lock(){
+  ADMIN_KEY = "";
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('gate').style.display = 'block';
+  document.getElementById('admin-key-input').value = '';
+}
+
+async function loadLessons(){
+  const list = document.getElementById('lesson-list');
+  list.innerHTML = '<p class="empty">Loading…</p>';
+  try{
+    const res = await fetch('/api/lessons');
+    const lessons = await res.json();
+    document.getElementById('lesson-count').textContent = lessons.length;
+    if(lessons.length === 0){
+      list.innerHTML = '<p class="empty">No lessons published yet.</p>';
+      return;
+    }
+    list.innerHTML = lessons.map(l => `
+      <div class="lesson-row">
+        <div>
+          <span class="tag">${l.pillar || ''}</span>
+          <div class="title" style="margin-top:6px">${l.title}</div>
+          <div class="meta">${l.subject} · ${l.grade}${l.board ? ' · ' + l.board : ''}</div>
+        </div>
+        <div class="row-actions">
+          <button class="btn-dark" onclick='editLesson(${JSON.stringify(l).replace(/'/g,"&apos;")})'>Edit</button>
+          <button class="btn-danger" onclick="deleteLesson('${l.id}','${l.title.replace(/'/g,"\\'")}')">Delete</button>
+        </div>
+      </div>`).join('');
+  } catch {
+    list.innerHTML = '<p class="empty">Could not load lessons.</p>';
+  }
+}
+
+function editLesson(l){
+  editingId = l.id;
+  document.getElementById('form-heading').textContent = 'Edit Lesson';
+  document.getElementById('submit-btn').textContent = 'Save Changes';
+  document.getElementById('cancel-edit-btn').style.display = 'inline-block';
+  document.getElementById('f-subject').value = l.subject || '';
+  document.getElementById('f-grade').value = l.grade || '';
+  document.getElementById('f-board').value = l.board || '';
+  document.getElementById('f-pillar').value = l.pillar || 'Decomposition';
+  document.getElementById('f-title').value = l.title || '';
+  document.getElementById('f-desc').value = l.desc || '';
+  (l.stages || []).forEach((s,i)=> document.getElementById('s-'+(i+1)).value = s);
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function resetForm(){
+  editingId = null;
+  document.getElementById('form-heading').textContent = 'Add a New Lesson';
+  document.getElementById('submit-btn').textContent = 'Publish Lesson';
+  document.getElementById('cancel-edit-btn').style.display = 'none';
+  ['f-subject','f-grade','f-board','f-title','f-desc'].forEach(id => document.getElementById(id).value = '');
+  for(let i=1;i<=8;i++) document.getElementById('s-'+i).value = '';
+  document.getElementById('f-photo').value = '';
+  document.getElementById('status-msg').textContent = '';
+}
+
+async function submitLesson(){
+  const statusEl = document.getElementById('status-msg');
+  const subject = document.getElementById('f-subject').value.trim();
+  const grade = document.getElementById('f-grade').value.trim();
+  const title = document.getElementById('f-title').value.trim();
+  const pillar = document.getElementById('f-pillar').value;
+  const stages = [1,2,3,4,5,6,7,8].map(i => document.getElementById('s-'+i).value.trim());
+
+  if(!subject || !grade || !title || stages.some(s => !s)){
+    statusEl.style.color = '#B4453F';
+    statusEl.textContent = 'Please fill in Subject, Grade, Title, and all 8 stages.';
+    return;
+  }
+
+  statusEl.style.color = 'var(--ink-soft)';
+  statusEl.textContent = 'Saving…';
+
+  try{
+    let cover_photo_url;
+    const fileInput = document.getElementById('f-photo');
+    if(fileInput.files && fileInput.files[0]){
+      const fd = new FormData();
+      fd.append('photo', fileInput.files[0]);
+      const upRes = await fetch('/api/admin/uploads', {method:'POST', headers:{'X-Admin-Key':ADMIN_KEY}, body: fd});
+      if(!upRes.ok) throw new Error('Photo upload failed');
+      cover_photo_url = (await upRes.json()).url;
+    }
+
+    const payload = {
+      subject, grade, title, pillar, stages,
+      board: document.getElementById('f-board').value.trim(),
+      desc: document.getElementById('f-desc').value.trim(),
+    };
+    if(cover_photo_url) payload.cover_photo_url = cover_photo_url;
+
+    const url = editingId ? `/api/admin/lessons/${editingId}` : '/api/admin/lessons';
+    const method = editingId ? 'PUT' : 'POST';
+    const res = await fetch(url, {
+      method, headers: {'Content-Type':'application/json', 'X-Admin-Key':ADMIN_KEY}, body: JSON.stringify(payload)
+    });
+    const data = await res.json();
+    if(!res.ok) throw new Error(data.error || 'Save failed');
+
+    statusEl.style.color = 'var(--leaf)';
+    statusEl.textContent = editingId ? 'Saved.' : 'Published — it now appears in the public Lesson Bank.';
+    resetForm();
+    loadLessons();
+  } catch(err){
+    statusEl.style.color = '#B4453F';
+    statusEl.textContent = 'Error: ' + err.message;
+  }
+}
+
+async function deleteLesson(id, title){
+  if(!confirm(`Delete "${title}"? This can't be undone.`)) return;
+  try{
+    const res = await fetch(`/api/admin/lessons/${id}`, {method:'DELETE', headers:{'X-Admin-Key':ADMIN_KEY}});
+    if(!res.ok) throw new Error();
+    loadLessons();
+  } catch {
+    alert('Could not delete that lesson.');
+  }
+}
+</script>
+</body>
+</html>

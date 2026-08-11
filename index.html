@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CT Setu — Every Classroom Already Teaches Computational Thinking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#05060D;
+    --void-deep:#020207;
+    --cosmic-blue:#0E1E42;
+    --midnight-purple:#241a4a;
+    --white:#F4F2EC;
+    --white-dim:#B9BAC8;
+    --gold:#D4AF6A;
+    --gold-soft:#8C7A50;
+    --glass:rgba(244,242,236,0.06);
+    --glass-border:rgba(212,175,106,0.22);
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;background:var(--void);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden;}
+  ::selection{background:var(--gold);color:var(--void-deep);}
+  h1,h2,h3,.display{font-family:'Space Grotesk',sans-serif;color:var(--white);margin:0;font-weight:600;}
+  .mono{font-family:'IBM Plex Mono',monospace;letter-spacing:.08em;}
+  a{color:inherit;}
+  button{font-family:inherit;cursor:pointer;}
+  ::-webkit-scrollbar{width:0;}
+
+  /* ============ PROGRESS BAR ============ */
+  #progress-bar{position:fixed;top:0;left:0;height:2px;width:0%;
+    background:linear-gradient(90deg,var(--gold-soft),var(--gold));z-index:200;transition:width .05s linear;}
+
+  /* ============ CANVAS / SCROLLYTELLING ============ */
+  #canvas-wrap{position:fixed;inset:0;z-index:1;}
+  #space-canvas{width:100%;height:100%;display:block;}
+
+  #hud{position:fixed;inset:0;z-index:2;pointer-events:none;}
+  .brand-tag{
+    position:absolute;top:26px;left:32px;display:flex;align-items:center;gap:10px;
+    font-family:'Space Grotesk';font-weight:600;font-size:1.05rem;letter-spacing:.02em;
+    opacity:0.9;
+  }
+  .brand-tag .dot{width:8px;height:8px;border-radius:50%;background:var(--gold);box-shadow:0 0 12px var(--gold);}
+
+  #skip-intro{
+    position:fixed;bottom:28px;right:32px;z-index:150;pointer-events:auto;
+    background:var(--glass);border:1px solid var(--glass-border);backdrop-filter:blur(8px);
+    color:var(--white-dim);font-size:.76rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    padding:10px 16px;border-radius:999px;transition:.2s;
+  }
+  #skip-intro:hover{color:var(--gold);border-color:var(--gold);}
+
+  #scroll-hint{
+    position:absolute;bottom:40px;left:50%;transform:translateX(-50%);text-align:center;
+    font-family:'IBM Plex Mono';font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--white-dim);
+    transition:opacity .4s ease;
+  }
+  #scroll-hint .chevron{margin-top:8px;font-size:1rem;animation:bob 1.8s ease-in-out infinite;}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(6px)}}
+
+  #intro-title{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;width:90%;max-width:760px;
+    transition:opacity .5s ease;
+  }
+  #intro-title .eyebrow{
+    font-family:'IBM Plex Mono';font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;display:block;
+  }
+  #intro-title h1{font-size:clamp(2.4rem,6vw,4.6rem);line-height:1.05;letter-spacing:-.01em;}
+  #intro-title p{color:var(--white-dim);margin-top:20px;font-size:1.05rem;max-width:52ch;margin-left:auto;margin-right:auto;}
+
+  /* Planet labels */
+  .planet-label{
+    position:absolute;transform:translate(-50%,-50%);text-align:left;white-space:nowrap;
+    transition:opacity .15s linear;
+  }
+  .planet-label .name{font-family:'Space Grotesk';font-weight:600;font-size:1.3rem;color:var(--white);}
+  .planet-label .concept{
+    font-family:'IBM Plex Mono';font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);margin-top:4px;
+  }
+  .planet-label .rule{width:36px;height:1px;background:var(--gold-soft);margin:10px 0;}
+
+  /* Earth / India overlay */
+  #india-overlay{
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;
+    transition:opacity .3s ease;
+  }
+  #india-overlay h2{font-size:clamp(1.6rem,3.6vw,2.6rem);max-width:16ch;line-height:1.2;margin:0 auto;}
+  #india-overlay svg{margin-bottom:20px;}
+
+  /* ============ SPACER (drives the journey) ============ */
+  #journey-spacer{position:relative;height:1000vh;z-index:0;}
+
+  /* ============ POST-JOURNEY CONTENT ============ */
+  main{position:relative;z-index:5;background:var(--void);}
+  .wrap{max-width:1160px;margin:0 auto;padding:0 28px;}
+  section{padding:120px 0;}
+  .eyebrow-sm{
+    font-family:'IBM Plex Mono';font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);
+    margin-bottom:16px;display:inline-block;
+  }
+  .section-head{max-width:640px;margin:0 auto 56px;text-align:center;}
+  .section-head h2{font-size:clamp(1.8rem,3.4vw,2.6rem);}
+  .section-head p{color:var(--white-dim);margin-top:14px;font-size:1.02rem;}
+
+  /* ---- BRIDGE ---- */
+  #bridge-section{background:radial-gradient(ellipse at 50% 0%, rgba(36,26,74,0.5), transparent 60%);}
+  .bridge-scene{position:relative;margin-top:20px;}
+  .bank-label{position:absolute;top:0;font-family:'Space Grotesk';font-weight:600;font-size:.95rem;color:var(--gold);}
+  .bank-label.left{left:6px;}
+  .bank-label.right{right:6px;text-align:right;}
+
+  /* ---- SUBJECT GALAXY ---- */
+  #galaxy-section{background:radial-gradient(ellipse at 50% 100%, rgba(14,30,66,0.6), transparent 65%);}
+  .galaxy-field{
+    position:relative;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:22px;
+    padding:20px 0 10px;
+  }
+  .orb{
+    position:relative;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;
+    cursor:pointer;border:1px solid var(--glass-border);backdrop-filter:blur(4px);
+    font-family:'Space Grotesk';font-weight:600;color:var(--white);
+    animation:float 7s ease-in-out infinite;transition:transform .25s ease, box-shadow .25s ease;
+  }
+  .orb:hover{transform:scale(1.08);box-shadow:0 0 40px -6px var(--orb-glow, var(--gold));}
+  .orb span{font-size:.86rem;padding:0 10px;}
+  @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+  /* ---- MODAL ---- */
+  .modal-bg{position:fixed;inset:0;background:rgba(2,2,7,.72);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;padding:24px;z-index:300;}
+  .modal-bg.open{display:flex;}
+  .modal{
+    background:linear-gradient(180deg, rgba(36,26,74,0.5), rgba(5,6,13,0.9));
+    border:1px solid var(--glass-border);border-radius:18px;max-width:560px;width:100%;
+    padding:32px;position:relative;box-shadow:0 30px 80px -20px rgba(0,0,0,.6);
+  }
+  .modal-close{position:absolute;top:18px;right:20px;background:none;border:none;font-size:1.4rem;color:var(--white-dim);}
+  .modal h3{font-size:1.4rem;margin-bottom:4px;}
+  .modal .mtag{color:var(--gold);font-family:'IBM Plex Mono';font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;}
+  .idea-block{margin-top:22px;padding-top:18px;border-top:1px solid var(--glass-border);}
+  .idea-block b{font-size:.82rem;color:var(--white-dim);font-weight:600;letter-spacing:.02em;}
+  .idea-block p{margin:6px 0 0;color:var(--white);line-height:1.6;font-size:.95rem;}
+  .idea-block+.idea-block{margin-top:18px;}
+  .soon{color:var(--white-dim);font-style:italic;font-size:.9rem;margin-top:18px;}
+
+  /* ---- SHOWCASE / LESSON PREVIEW ---- */
+  #showcase-section .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:44px;}
+  .glass-card{
+    background:var(--glass);border:1px solid var(--glass-border);border-radius:16px;padding:22px;backdrop-filter:blur(6px);
+  }
+  .glass-card .tag{font-family:'IBM Plex Mono';font-size:.65rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);}
+  .glass-card h3{font-size:1.08rem;margin-top:10px;}
+  .glass-card p{color:var(--white-dim);font-size:.87rem;margin-top:8px;line-height:1.55;}
+
+  /* ---- CTA ---- */
+  #cta-section{text-align:center;}
+  .cta-panel{
+    background:linear-gradient(135deg, rgba(36,26,74,.55), rgba(14,30,66,.4));
+    border:1px solid var(--glass-border);border-radius:24px;padding:64px 40px;
+  }
+  .cta-panel h2{font-size:clamp(1.7rem,3.4vw,2.4rem);max-width:24ch;margin:0 auto;}
+  .cta-panel p{color:var(--white-dim);margin:16px auto 30px;max-width:52ch;}
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;border:none;border-radius:999px;padding:14px 28px;
+    font-weight:600;font-size:.92rem;transition:transform .15s ease;
+  }
+  .btn:hover{transform:translateY(-2px);}
+  .btn-gold{background:linear-gradient(135deg,var(--gold),#B8925A);color:var(--void-deep);}
+  .btn-ghost{background:none;border:1px solid var(--glass-border);color:var(--white);margin-left:12px;}
+
+  footer{padding:40px 0;border-top:1px solid var(--glass-border);}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;color:var(--white-dim);font-size:.82rem;}
+
+  @media(max-width:720px){
+    #intro-title h1{font-size:2rem;}
+    .planet-label .name{font-size:1.05rem;}
+  }
+</style>
+</head>
+<body>
+
+<div id="progress-bar"></div>
+
+<!-- ============ 3D CANVAS + HUD ============ -->
+<div id="canvas-wrap"><canvas id="space-canvas"></canvas></div>
+<div id="hud">
+  <div class="brand-tag"><span class="dot"></span> CT SETU</div>
+
+  <div id="intro-title">
+    <span class="eyebrow">National Computational Thinking Platform</span>
+    <h1>Every classroom already teaches computational thinking.</h1>
+    <p>Scroll to begin a journey through the four pillars of CT — decomposition, pattern recognition, abstraction, and algorithm design — and the ecosystem built around them.</p>
+    <div id="scroll-hint"><div>Scroll</div><div class="chevron">⌄</div></div>
+  </div>
+
+  <div id="planet-labels"></div>
+
+  <div id="india-overlay">
+    <svg width="150" height="150" viewBox="0 0 150 150">
+      <g id="india-dots"></g>
+    </svg>
+    <h2>Every Classroom Already Teaches Computational Thinking</h2>
+  </div>
+</div>
+
+<button id="skip-intro">Skip Intro ↓</button>
+
+<!-- ============ SCROLL SPACER (drives camera) ============ -->
+<div id="journey-spacer"></div>
+
+<!-- ============ POST-JOURNEY CONTENT ============ -->
+<main>
+
+  <section id="bridge-section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow-sm">The Bridge</span>
+        <h2>One side is your subject. The other is computational thinking.</h2>
+        <p>Every lesson on Setu carries a teacher across the same eight stepping stones — regardless of what subject they teach.</p>
+      </div>
+      <div class="bridge-scene">
+        <span class="bank-label left">Your Subject</span>
+        <span class="bank-label right">Computational Thinking</span>
+        <svg viewBox="0 0 1000 220" xmlns="http://www.w3.org/2000/svg" style="width:100%">
+          <path d="M0 175 Q500 175 1000 175" stroke="rgba(212,175,106,0.15)" stroke-width="26" fill="none"/>
+          <rect x="10" y="150" width="140" height="60" rx="6" fill="rgba(14,30,66,0.6)" stroke="rgba(212,175,106,0.2)"/>
+          <rect x="850" y="150" width="140" height="60" rx="6" fill="rgba(36,26,74,0.6)" stroke="rgba(212,175,106,0.2)"/>
+          <path d="M60 150 Q500 60 940 150" stroke="rgba(212,175,106,0.5)" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <g id="stones"></g>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section id="galaxy-section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow-sm">Subject Galaxy</span>
+        <h2>Twelve subjects, one way of thinking</h2>
+        <p>Every subject taught in an Indian classroom already has a computational thinking idea hiding in it. Tap a subject to see one.</p>
+      </div>
+      <div class="galaxy-field" id="galaxy-field"></div>
+    </div>
+  </section>
+
+  <section id="showcase-section">
+    <div class="wrap">
+      <div class="section-head">
+        <span class="eyebrow-sm">From the Lesson Bank</span>
+        <h2>A glimpse of what's inside</h2>
+        <p>Five of hundreds of classroom-tested lessons, each built on the same eight-stage cycle you just crossed.</p>
+      </div>
+      <div class="cards" id="showcase-cards"></div>
+    </div>
+  </section>
+
+  <section id="cta-section">
+    <div class="wrap">
+      <div class="cta-panel">
+        <span class="eyebrow-sm">Ready to explore</span>
+        <h2>The full Lesson Bank, Builder, and Dashboard live in the working platform</h2>
+        <p>This page is the cinematic front door. The functional side — search, lesson builder, teacher contributions, district dashboards — runs on the companion CT Setu platform build.</p>
+        <div>
+          <a class="btn btn-gold" href="platform.html" style="text-decoration:none">Enter the Platform →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <div><strong style="color:var(--white)">CT Setu</strong> — Bridge to Thinking. NEP 2020 aligned.</div>
+      <div class="mono" style="font-size:.72rem">DECOMPOSITION · PATTERN RECOGNITION · ABSTRACTION · ALGORITHM DESIGN</div>
+    </div>
+  </footer>
+
+</main>
+
+<div class="modal-bg" id="modal-bg" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal-content"></div>
+</div>
+
+<script src="https://unpkg.com/three@0.160.0/build/three.min.js"></script>
+<script>
+const THREE = window.THREE;
+
+/* =====================================================================
+   DATA
+===================================================================== */
+// Texture URLs point to a real, freely-licensed planet photo-texture set
+// (mirrored on GitHub, MIT-licensed repo, imagery ultimately NASA-derived).
+// If a URL ever fails to load, the code below falls back to the flat
+// stylized color automatically — nothing breaks.
+const TEX_BASE = "https://raw.githubusercontent.com/yogeshkumarsaini/Solar-System/main/img/";
+const PLANETS = [
+  {key:"sun",     name:"The Sun",   concept:"Computational Thinking", color:0xFFD27A, emissive:0xFFB347, size:3.4, isSun:true,   texture:TEX_BASE+"sun_hd.jpg"},
+  {key:"mercury", name:"Mercury",   concept:"Decomposition",          color:0x93A2B3, emissive:0x2a3340, size:0.9,              texture:TEX_BASE+"mercury_hd.jpg"},
+  {key:"venus",   name:"Venus",     concept:"Pattern Recognition",    color:0xE3B053, emissive:0x4a3617, size:1.3,              texture:TEX_BASE+"venus_hd.jpg"},
+  {key:"earth",   name:"Earth",     concept:"Algorithm Design",       color:0x3E7FBF, emissive:0x142235, size:1.4, isEarth:true, texture:TEX_BASE+"earth_hd.jpg"},
+  {key:"mars",    name:"Mars",      concept:"Abstraction",            color:0xA6455B, emissive:0x2c1017, size:1.0,              texture:TEX_BASE+"mars_hd.jpg"},
+  {key:"jupiter", name:"Jupiter",   concept:"Teacher Community",      color:0xC97B3D, emissive:0x2e1a0c, size:2.2,              texture:TEX_BASE+"jupiter_hd.jpg"},
+  {key:"saturn",  name:"Saturn",    concept:"Lesson Repository",      color:0xD9C48A, emissive:0x332c1c, size:1.9, hasRing:true, texture:TEX_BASE+"saturn_hd.jpg"},
+  {key:"uranus",  name:"Uranus",    concept:"Innovation Hub",         color:0x6FD1C6, emissive:0x123330, size:1.5,              texture:TEX_BASE+"uranus_hd.jpg"},
+  {key:"neptune", name:"Neptune",   concept:"Artificial Intelligence",color:0x5B5FE0, emissive:0x151a4d, size:1.5,              texture:TEX_BASE+"neptune_hd.jpg"},
+];
+
+const STAGES = ["Problem","Activity","Discussion","Pattern Recognition","Prediction","Reasoning","Reflection","AI Connection"];
+
+const SUBJECTS = [
+  {name:"Mathematics", color:"#D4AF6A", grade:"Class 5", topic:"Fractions",
+    idea:"Use paper rotis or pizzas to divide equally among different numbers of people. Students identify patterns in fair sharing and develop simple algorithms for equal distribution."},
+  {name:"Science", color:"#6FD1C6", grade:"Class 8", topic:"Photosynthesis",
+    idea:"Students model photosynthesis as Inputs → Process → Outputs, introducing decomposition as a way to understand complex systems."},
+  {name:"Social Science", color:"#C97B3D", grade:"Class 7", topic:"Trade Routes",
+    idea:"Students optimize spice trade routes by considering distance, weather, and resources, illustrating algorithm design."},
+  {name:"English", color:"#5B5FE0", grade:"Class 6", topic:"Story Writing",
+    idea:"Students decompose stories into characters, setting, conflict, climax, and resolution before writing."},
+  {name:"Hindi", color:"#A6455B", grade:"Class 5", topic:"मुहावरे (Idioms)",
+    idea:"Students group idioms based on meanings, identify language patterns, and create categorization algorithms."},
+  {name:"Art", color:"#E3B053", grade:"Class 4", topic:"Rangoli",
+    idea:"Students abstract intricate rangoli designs into repeatable geometric rules and recreate them from written instructions."},
+  {name:"Computer Science", color:"#3E7FBF", grade:"Class 7", topic:"Scratch Game",
+    idea:"Students design game logic using flowcharts, event-driven programming, loops, and conditions."},
+  {name:"Music", color:"#93A2B3"},
+  {name:"Physical Education", color:"#D9C48A"},
+  {name:"Robotics", color:"#6FD1C6"},
+  {name:"Environmental Studies", color:"#C97B3D"},
+  {name:"Coding", color:"#5B5FE0"},
+];
+
+const LESSONS = [
+  {subject:"Mathematics", grade:"Grade 6", pillar:"Pattern Recognition", title:"Sharing Rotis Fairly", desc:"Splitting rotis fairly to discover fractions as a pattern of division."},
+  {subject:"Science", grade:"Grade 8", pillar:"Decomposition", title:"Breaking Down a Leaf's Factory", desc:"Decomposing photosynthesis into inputs, process, and outputs."},
+  {subject:"Social Science", grade:"Grade 7", pillar:"Algorithm Design", title:"Mapping the Spice Route", desc:"Designing a step-by-step seasonal trade route across historical ports."},
+  {subject:"Language", grade:"Grade 5", pillar:"Pattern Recognition", title:"Sorting Time Words", desc:"Sorting verbs by tense to uncover the rule pattern of English grammar."},
+  {subject:"Arts", grade:"Grade 4", pillar:"Abstraction", title:"Rangoli Rules", desc:"Abstracting a rangoli into a rule anyone could redraw from instructions alone."},
+];
+
+/* =====================================================================
+   THREE.JS SCENE
+===================================================================== */
+const canvas = document.getElementById('space-canvas');
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:false});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio,2));
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.15;
+
+const textureLoader = new THREE.TextureLoader();
+
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x05060d);
+scene.fog = new THREE.FogExp2(0x05060d, 0.0055);
+
+const camera = new THREE.PerspectiveCamera(52, window.innerWidth/window.innerHeight, 0.1, 800);
+
+// ---- lighting ----
+scene.add(new THREE.AmbientLight(0x33395a, 0.9));
+const sunLight = new THREE.PointLight(0xffe3b0, 3.5, 300, 1.6);
+scene.add(sunLight);
+
+/* ---- glow texture generator ---- */
+function glowTexture(hex){
+  const c = document.createElement('canvas'); c.width = c.height = 256;
+  const ctx = c.getContext('2d');
+  const col = new THREE.Color(hex);
+  const rgb = `${Math.round(col.r*255)},${Math.round(col.g*255)},${Math.round(col.b*255)}`;
+  const g = ctx.createRadialGradient(128,128,0,128,128,128);
+  g.addColorStop(0, `rgba(${rgb},1)`);
+  g.addColorStop(0.35, `rgba(${rgb},0.5)`);
+  g.addColorStop(1, `rgba(${rgb},0)`);
+  ctx.fillStyle = g; ctx.fillRect(0,0,256,256);
+  return new THREE.CanvasTexture(c);
+}
+function dotTexture(){
+  const c = document.createElement('canvas'); c.width = c.height = 64;
+  const ctx = c.getContext('2d');
+  const g = ctx.createRadialGradient(32,32,0,32,32,32);
+  g.addColorStop(0,'rgba(255,255,255,1)');
+  g.addColorStop(0.5,'rgba(255,255,255,0.5)');
+  g.addColorStop(1,'rgba(255,255,255,0)');
+  ctx.fillStyle = g; ctx.fillRect(0,0,64,64);
+  return new THREE.CanvasTexture(c);
+}
+function ringTexture(){
+  // A radial band gradient mapped onto RingGeometry's v-axis (inner->outer),
+  // giving Saturn's ring visible gaps instead of one flat color.
+  const c = document.createElement('canvas'); c.width = 4; c.height = 256;
+  const ctx = c.getContext('2d');
+  const g = ctx.createLinearGradient(0,0,0,256);
+  const bands = [
+    [0.00,0.14,0.05],[0.14,0.30,0.55],[0.30,0.35,0.10],[0.35,0.55,0.80],
+    [0.55,0.60,0.20],[0.60,0.82,0.65],[0.82,0.88,0.08],[0.88,1.00,0.40],
+  ];
+  bands.forEach(([s,e,a])=>{
+    g.addColorStop(s, `rgba(224,204,150,${a})`);
+    g.addColorStop(e, `rgba(224,204,150,${a})`);
+  });
+  ctx.fillStyle = g; ctx.fillRect(0,0,4,256);
+  return new THREE.CanvasTexture(c);
+}
+
+/* ---- parallax starfield: 3 depth layers so near stars visibly sweep past
+   faster than far ones as the camera dollies through — the classic
+   space-scene parallax cue, done with real depth rather than a 2D trick ---- */
+const starLayers = [];
+function makeStarLayer(count, rMin, rMax, size, opacity){
+  const positions = new Float32Array(count*3);
+  for(let i=0;i<count;i++){
+    const r = rMin + Math.random()*(rMax-rMin);
+    const theta = Math.random()*Math.PI*2;
+    const phi = Math.acos((Math.random()*2)-1);
+    positions[i*3]   = r*Math.sin(phi)*Math.cos(theta);
+    positions[i*3+1] = r*Math.sin(phi)*Math.sin(theta);
+    positions[i*3+2] = r*Math.cos(phi);
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute('position', new THREE.BufferAttribute(positions,3));
+  const mat = new THREE.PointsMaterial({size, map:dotTexture(), transparent:true, opacity, depthWrite:false, color:0xffffff});
+  const pts = new THREE.Points(geo, mat);
+  scene.add(pts);
+  starLayers.push(pts);
+}
+makeStarLayer(1400, 60,  180, 1.9, 1.0);   // near layer — bright, sparse, fast-feeling parallax
+makeStarLayer(2600, 180, 380, 1.15, 0.85); // mid layer
+makeStarLayer(4000, 380, 620, 0.7,  0.55); // far layer — dense, dim, near-static backdrop
+
+/* ---- nebulae ---- */
+const nebulaSprites = [];
+[
+  {color:0x3a2a7a, pos:[-60,20,-90], scale:140},
+  {color:0x18305e, pos:[70,-30,-160], scale:180},
+  {color:0x5a2f52, pos:[-40,-10,-260], scale:160},
+].forEach(n=>{
+  const mat = new THREE.SpriteMaterial({map:glowTexture(n.color), transparent:true, opacity:0.5, blending:THREE.AdditiveBlending, depthWrite:false});
+  const spr = new THREE.Sprite(mat);
+  spr.position.set(...n.pos);
+  spr.scale.set(n.scale,n.scale,1);
+  scene.add(spr);
+  nebulaSprites.push(spr);
+});
+
+/* =====================================================================
+   PATH: hand-authored waypoints for camera + planet placement
+===================================================================== */
+const PATH_KEYS  = ["start","sun","mercury","venus","earth","mars","jupiter","saturn","uranus","neptune","end"];
+const PLANET_POS = {
+  start:   [0, 3, 46],
+  sun:     [0, 0, 0],
+  mercury: [9, -2, -15],
+  venus:   [-8, 3, -28],
+  earth:   [11, -3, -42],
+  mars:    [-13, 5, -58],
+  jupiter: [17, -5, -78],
+  saturn:  [-19, 7, -100],
+  uranus:  [15, -4, -124],
+  neptune: [-13, 6, -150],
+  end:     [0, 4, -172],
+};
+const CAM_POS = {
+  start:   [0, 5, 58],
+  sun:     [0, 6, 15],
+  mercury: [9, 2, -3],
+  venus:   [-8, 6, -15],
+  earth:   [11, 1.4, -34.5],
+  mars:    [-13, 8, -47],
+  jupiter: [17, 3, -66],
+  saturn:  [-19, 10, -88],
+  uranus:  [15, 2, -112],
+  neptune: [-13, 8, -138],
+  end:     [0, 6, -166],
+};
+const SEGMENTS = PATH_KEYS.length - 1;
+
+/* ---- build planet meshes ---- */
+const planetMeshes = {};
+PLANETS.forEach(p=>{
+  const geo = new THREE.SphereGeometry(p.size, 64, 64);
+  const mat = new THREE.MeshStandardMaterial({
+    color:p.color, emissive:p.emissive, emissiveIntensity: p.isSun?1.6:0.35,
+    roughness:0.55, metalness:0.15
+  });
+
+  // Attempt a real photo-texture; on success it replaces the flat color,
+  // on failure (offline, blocked, 404) the stylized color above just stays.
+  if(p.texture){
+    textureLoader.load(p.texture, tex=>{
+      tex.colorSpace = THREE.SRGBColorSpace;
+      mat.map = tex;
+      mat.color.set(0xffffff);
+      if(p.isSun){ mat.emissiveMap = tex; mat.emissiveIntensity = 1.1; }
+      mat.needsUpdate = true;
+    }, undefined, ()=>{ /* keep the stylized fallback material — no error surfaced */ });
+  }
+
+  const mesh = new THREE.Mesh(geo, mat);
+  mesh.position.set(...PLANET_POS[p.key]);
+  scene.add(mesh);
+  planetMeshes[p.key] = mesh;
+
+  // glow halo behind every planet
+  const glowMat = new THREE.SpriteMaterial({map:glowTexture(p.isSun?0xffcf7a:p.color), transparent:true, opacity:p.isSun?0.9:0.45, blending:THREE.AdditiveBlending, depthWrite:false});
+  const glow = new THREE.Sprite(glowMat);
+  glow.scale.set(p.size*(p.isSun?9:5), p.size*(p.isSun?9:5), 1);
+  mesh.add(glow);
+
+  if(p.hasRing){
+    const ring = new THREE.Mesh(
+      new THREE.RingGeometry(p.size*1.4, p.size*2.3, 128, 1),
+      new THREE.MeshBasicMaterial({map:ringTexture(), transparent:true, side:THREE.DoubleSide, opacity:0.88})
+    );
+    ring.rotation.x = Math.PI/2.3;
+    mesh.add(ring);
+  }
+  if(p.isSun){ sunLight.position.copy(mesh.position); }
+});
+
+/* ---- India network overlay (SVG dots, screen-space, shown at earth waypoint) ---- */
+const indiaPoints = [[75,30],[60,45],[90,50],[50,65],[80,75],[65,95],[95,90],[40,85]];
+const dotsGroup = document.getElementById('india-dots');
+indiaPoints.forEach((pt,i)=>{
+  const c = document.createElementNS('http://www.w3.org/2000/svg','circle');
+  c.setAttribute('cx',pt[0]); c.setAttribute('cy',pt[1]); c.setAttribute('r','3');
+  c.setAttribute('fill','#D4AF6A'); c.style.filter='drop-shadow(0 0 4px #D4AF6A)';
+  dotsGroup.appendChild(c);
+  if(i>0){
+    const l = document.createElementNS('http://www.w3.org/2000/svg','line');
+    l.setAttribute('x1',indiaPoints[i-1][0]); l.setAttribute('y1',indiaPoints[i-1][1]);
+    l.setAttribute('x2',pt[0]); l.setAttribute('y2',pt[1]);
+    l.setAttribute('stroke','rgba(212,175,106,0.35)'); l.setAttribute('stroke-width','1');
+    dotsGroup.insertBefore(l, dotsGroup.firstChild);
+  }
+});
+
+/* ---- planet HTML labels (created once) ---- */
+const labelContainer = document.getElementById('planet-labels');
+const labelEls = {};
+PLANETS.forEach(p=>{
+  if(p.isEarth) return; // earth uses the india overlay instead
+  const div = document.createElement('div');
+  div.className = 'planet-label';
+  div.innerHTML = `<div class="rule"></div><div class="name">${p.name}</div><div class="concept">${p.concept}</div>`;
+  div.style.opacity = 0;
+  labelContainer.appendChild(div);
+  labelEls[p.key] = div;
+});
+
+/* =====================================================================
+   SCROLL-DRIVEN CAMERA
+===================================================================== */
+const smoothstep = x => x*x*(3-2*x);
+function lerp3(a,b,t){ return [a[0]+(b[0]-a[0])*t, a[1]+(b[1]-a[1])*t, a[2]+(b[2]-a[2])*t]; }
+
+/* ---- pointer parallax: a light "look around" layer on top of the scroll
+   path — the cue that makes a space scene feel truly 3D instead of a video ---- */
+const pointerTarget = {x:0, y:0};
+const pointer = {x:0, y:0};
+window.addEventListener('pointermove', e=>{
+  pointerTarget.x = (e.clientX/window.innerWidth - 0.5) * 2;
+  pointerTarget.y = (e.clientY/window.innerHeight - 0.5) * 2;
+});
+
+const JOURNEY_VH = 9;   // 900vh of scroll = full journey
+const BUFFER_VH  = 1;   // 100vh fade-out buffer after journey
+document.getElementById('journey-spacer').style.height = ((JOURNEY_VH+BUFFER_VH)*100) + 'vh';
+
+function getJourneyProgress(){
+  const total = window.innerHeight * JOURNEY_VH;
+  return Math.min(Math.max(window.scrollY / total, 0), 1);
+}
+function getCanvasOpacity(){
+  const total = window.innerHeight * JOURNEY_VH;
+  const buffer = window.innerHeight * BUFFER_VH;
+  const y = window.scrollY;
+  if(y <= total) return 1;
+  return Math.max(0, 1 - (y-total)/buffer);
+}
+
+const tmpVec = new THREE.Vector3();
+function project(pos){
+  tmpVec.set(...pos).project(camera);
+  return {
+    x: (tmpVec.x*0.5+0.5)*window.innerWidth,
+    y: (-tmpVec.y*0.5+0.5)*window.innerHeight,
+    behind: tmpVec.z > 1
+  };
+}
+
+function updateCamera(){
+  const p = getJourneyProgress();
+  const segFloat = p*SEGMENTS;
+  let segIndex = Math.floor(segFloat);
+  if(segIndex >= SEGMENTS) segIndex = SEGMENTS-1;
+  const local = smoothstep(Math.min(Math.max(segFloat-segIndex,0),1));
+
+  const kA = PATH_KEYS[segIndex], kB = PATH_KEYS[segIndex+1];
+  const camPos = lerp3(CAM_POS[kA], CAM_POS[kB], local);
+  const lookAt = lerp3(PLANET_POS[kA], PLANET_POS[kB], local);
+
+  // smooth the pointer toward its target so the look-around parallax eases, not snaps
+  pointer.x += (pointerTarget.x - pointer.x) * 0.04;
+  pointer.y += (pointerTarget.y - pointer.y) * 0.04;
+  const parX = pointer.x * 1.4;
+  const parY = -pointer.y * 0.8;
+
+  camera.position.set(camPos[0]+parX, camPos[1]+parY, camPos[2]);
+  camera.lookAt(lookAt[0]+parX*0.4, lookAt[1]+parY*0.4, lookAt[2]);
+
+  // labels: triangular falloff around each planet's waypoint index
+  PLANETS.forEach((pl, i)=>{ // i=0 is sun -> PATH index 1
+    const idx = i+1;
+    const dist = Math.abs(segFloat - idx);
+    const opacity = Math.max(0, 1 - dist*1.15);
+    if(pl.isEarth){
+      document.getElementById('india-overlay').style.opacity = opacity;
+    } else {
+      const el = labelEls[pl.key];
+      const scr = project(PLANET_POS[pl.key]);
+      el.style.left = scr.x+'px';
+      el.style.top = (scr.y-70)+'px';
+      el.style.opacity = scr.behind ? 0 : opacity;
+    }
+  });
+
+  // intro title fades right as journey begins
+  const introOp = Math.max(0, 1 - segFloat*1.4);
+  document.getElementById('intro-title').style.opacity = introOp;
+  document.getElementById('intro-title').style.pointerEvents = introOp>0.05 ? 'auto':'none';
+
+  // progress bar + canvas fade
+  document.getElementById('progress-bar').style.width = (p*100)+'%';
+  document.getElementById('canvas-wrap').style.opacity = getCanvasOpacity();
+}
+
+/* =====================================================================
+   RENDER LOOP
+===================================================================== */
+const clock = new THREE.Clock();
+function animate(){
+  requestAnimationFrame(animate);
+  const t = clock.getElapsedTime();
+  Object.values(planetMeshes).forEach(m=> m.rotation.y += 0.0025);
+  nebulaSprites.forEach((s,i)=> s.material.opacity = 0.4 + Math.sin(t*0.15+i)*0.08 );
+  // near/mid/far layers drift at different rates — a small idle parallax cue
+  starLayers.forEach((layer,i)=>{ layer.rotation.y += 0.00006 * (3-i); });
+  updateCamera();
+  renderer.render(scene, camera);
+}
+animate();
+
+window.addEventListener('resize', ()=>{
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+document.getElementById('skip-intro').addEventListener('click', ()=>{
+  window.scrollTo({top: window.innerHeight*(JOURNEY_VH+BUFFER_VH), behavior:'smooth'});
+});
+
+/* =====================================================================
+   BRIDGE STONES (SVG, matches earlier concept, gold-toned)
+===================================================================== */
+(function renderStones(){
+  const g = document.getElementById('stones');
+  const n = STAGES.length;
+  let svg = "";
+  for(let i=0;i<n;i++){
+    const t = i/(n-1);
+    const x = 60 + t*(940-60);
+    const y = 150 - Math.sin(Math.PI*t)*90;
+    svg += `<g>
+      <circle cx="${x}" cy="${y}" r="15" fill="#0E1E42" stroke="#D4AF6A" stroke-width="3"/>
+      <text x="${x}" y="${y+4}" text-anchor="middle" font-family="IBM Plex Mono" font-weight="600" font-size="11" fill="#D4AF6A">${i+1}</text>
+    </g>`;
+  }
+  g.innerHTML = svg;
+})();
+
+/* =====================================================================
+   SUBJECT GALAXY
+===================================================================== */
+(function renderGalaxy(){
+  const field = document.getElementById('galaxy-field');
+  const sizes = [128,104,116,98,110,92,120,88,100,94,106,90];
+  SUBJECTS.forEach((s,i)=>{
+    const size = sizes[i % sizes.length];
+    const el = document.createElement('div');
+    el.className = 'orb';
+    el.style.width = size+'px'; el.style.height = size+'px';
+    el.style.background = `radial-gradient(circle at 35% 30%, ${s.color}55, rgba(5,6,13,0.6))`;
+    el.style.setProperty('--orb-glow', s.color);
+    el.style.animationDelay = (i*0.4)+'s';
+    el.innerHTML = `<span>${s.name}</span>`;
+    el.addEventListener('click', ()=>openSubject(s));
+    field.appendChild(el);
+  });
+})();
+
+function openSubject(s){
+  const modal = document.getElementById('modal-content');
+  modal.innerHTML = `
+    <button class="modal-close" onclick="closeModal()">&times;</button>
+    <span class="mtag">Subject Galaxy</span>
+    <h3 style="margin-top:6px">${s.name}</h3>
+    ${s.idea ? `
+      <div class="idea-block">
+        <b>${s.grade} · ${s.topic}</b>
+        <p>${s.idea}</p>
+      </div>` : `<p class="soon">Sample CT idea coming soon for this subject.</p>`}
+  `;
+  document.getElementById('modal-bg').classList.add('open');
+}
+window.closeModal = ()=> document.getElementById('modal-bg').classList.remove('open');
+
+/* =====================================================================
+   SHOWCASE CARDS
+===================================================================== */
+(function renderShowcase(){
+  document.getElementById('showcase-cards').innerHTML = LESSONS.map(l=>`
+    <div class="glass-card">
+      <span class="tag">${l.pillar}</span>
+      <h3>${l.title}</h3>
+      <p>${l.subject} · ${l.grade}</p>
+      <p>${l.desc}</p>
+    </div>`).join('');
+})();
+</script>
+</body>
+</html>
